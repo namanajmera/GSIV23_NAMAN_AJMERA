@@ -19,7 +19,7 @@ import {
 
 const NavBar = () => {
   const navigate = useNavigate();
-  const { searchValue, isSearching } = useSelector((state) => {
+  const { searchValue } = useSelector((state) => {
     return state.moviesData;
   });
   const navigateTo = () => {
@@ -29,26 +29,28 @@ const NavBar = () => {
 
   const dispatch = useDispatch();
 
-  const getByMovieName = (e) => {
-    dispatch(setSearchValue(e.target.value));
-    if (!e.target.value) {
+  const getByMovieName = async (e) => {
+    const searchValueData = e.target.value;
+    dispatch(setSearchValue(searchValueData));
+
+    if (!searchValueData) {
       dispatch(setIsSearching(false));
-      getMovies();
+      await getMovies();
       return;
     }
     dispatch(setIsSearching(true));
-    getMovieByMovieName(e.target.value, 1)
-      .then((res) => {
-        const data = {
-          isSearch: isSearching,
-          data: res.data.results,
-          isEmpty: false,
-        };
-        dispatch(setMoviesData(data));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    try {
+      const response = await getMovieByMovieName(searchValueData, 1);
+      const data = {
+        isSearch: true,
+        data: response.data.results,
+        isEmpty: false,
+      };
+      dispatch(setMoviesData(data));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const getMovies = async () => {

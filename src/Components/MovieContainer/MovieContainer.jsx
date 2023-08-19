@@ -58,17 +58,20 @@ const MovieContainer = () => {
         if (!isSearching) {
           getMovies(page);
         } else {
-          getMovieScrollSearch(page);
+          setTimeout(() => {
+            getMovieScrollSearch(searchValue, page);
+          }, 2000);
         }
       }
     };
 
-    const getMovieScrollSearch = (currentPage) => {
-      getMovieByMovieName(searchValue, currentPage)
+    const getMovieScrollSearch = (searchValueData, currentPage) => {
+      getMovieByMovieName(searchValueData, currentPage)
         .then((res) => {
           const data = {
             isSearch: isSearching,
             data: res.data.results,
+            isEmpty: false,
           };
           dispatch(setMoviesData(data));
           dispatch(setPage(currentPage + 1));
