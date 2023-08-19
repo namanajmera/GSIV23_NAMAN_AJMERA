@@ -88,7 +88,7 @@ const MovieDetailsContainer = () => {
               </ul>
             </div>
             <div className={style["description"]}>
-              <span>{movie && movie.overview}</span>
+              <span>Description: {movie && movie.overview}</span>
             </div>
           </div>
         </div>
