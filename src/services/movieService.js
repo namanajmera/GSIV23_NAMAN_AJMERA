@@ -7,7 +7,7 @@ const headers = {
     "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMmJmNGRhYjRiMTE5MjUyYTRlZjlmNWIwNjkwZjEyOSIsInN1YiI6IjY0ZGYzYzEyZDEwMGI2MTRiMzAwY2IxNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Fc3Q71tOlZ_95aIrE0KoPWWj4EoR_EF_LzI6sKiIl3o",
 };
 const getMoviesDetails = (page) => {
-  const apiURL = `${BASE_URL}movie/now_playing?language=en-US&page=${page}`;
+  const apiURL = `${BASE_URL}movie/upcoming?language=en-US&page=${page}`;
 
   return axios.get(apiURL, { headers });
 };
