@@ -28,7 +28,7 @@ const MovieBoxContainer = ({
           <span className={style["title"]}>
             <strong>{title}</strong>
           </span>
-          <span className={style["rating"]}>{vote_average}</span>
+          <span className={style["rating"]}>{vote_average}/10</span>
         </div>
         <div className={style["desc"]}>
           <span>{overview}</span>

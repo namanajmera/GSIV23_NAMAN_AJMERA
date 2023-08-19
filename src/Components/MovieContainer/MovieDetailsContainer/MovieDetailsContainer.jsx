@@ -1,45 +1,70 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from "./MovieDetailsContainer.module.less";
 import avenger from "../../../assets/avengers.jpg";
+import { useParams } from "react-router-dom";
+import { getMovieDetailsById } from "../../../services/movieService";
+import { convertMinutesToHHMM } from "../../../utilities/commonFunction";
 
 const MovieDetailsContainer = () => {
+  const [movie, setMovie] = useState(null);
+  const { id } = useParams();
+  useEffect(() => {
+    getMovieById(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getMovieById = (id) => {
+    getMovieDetailsById(id).then((res) => {
+      console.log(res.data);
+      setMovie(res.data);
+    });
+  };
+
   return (
-    <div className={style["details-container"]}>
-      <div className={style["imageContainer"]}>
-        <img src={avenger} alt="" />
-      </div>
-      <div className={style["details"]}>
-        <div className={style["title-rating"]}>
-          <span className={style["title"]}>Avengers End Game</span>
-          <span className={style["rating"]}>4.9</span>
+    <>
+      {movie && (
+        <div className={style["details-container"]}>
+          <div className={style["imageContainer"]}>
+            <img
+              src={`https://image.tmdb.org/t/p/w500/${
+                movie && movie.poster_path
+              }`}
+              alt=""
+            />
+          </div>
+          <div className={style["details"]}>
+            <div className={style["title-rating"]}>
+              <span className={style["title"]}>{movie && movie.title}</span>
+              <span className={style["rating"]}>
+                {movie && movie.vote_average}/10
+              </span>
+            </div>
+            <div className={style["info"]}>
+              <span className={style["year"]}>{movie.release_date}</span>{" "}
+              |&nbsp;
+              <span className={style["length"]}>
+                {convertMinutesToHHMM(movie.runtime)}
+              </span>{" "}
+              |&nbsp;
+              <span className={style["director"]}>Ruso Brothers</span> |&nbsp;
+            </div>
+            <div className={style["cast"]}>
+              <span>Genres:</span>
+              <ul>
+                {movie &&
+                  movie.genres &&
+                  movie.genres.map((genre) => (
+                    <li key={genre.id}>{genre.name}&nbsp;|&nbsp;</li>
+                  ))}
+              </ul>
+            </div>
+            <div className={style["description"]}>
+              <span>{movie && movie.overview}</span>
+            </div>
+          </div>
         </div>
-        <div className={style["info"]}>
-          <span className={style["year"]}>2021</span> |&nbsp;
-          <span className={style["length"]}>3 hr 10 min</span> |&nbsp;
-          <span className={style["director"]}>Ruso Brothers</span> |&nbsp;
-        </div>
-        <div className={style["cast"]}>
-          <ul>
-            <li>Cast 1,</li>
-            <li>Cast 2,</li>
-            <li>Cast 3,</li>
-            <li>Cast 4,</li>
-            <li>Cast 5,</li>
-          </ul>
-        </div>
-        <div className={style["description"]}>
-          <span>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure iusto
-            doloremque atque repellat inventore harum velit, corrupti illo
-            recusandae commodi dolor eaque quas adipisci corporis numquam
-            similique, officia delectus dolorem. Ea aut dolorem sed eligendi,
-            soluta in nisi eos voluptates, placeat voluptatibus praesentium eum
-            error. Illo voluptatum, a omnis doloremque quas, corporis, debitis
-            deserunt ducimus incidunt sunt eaque sit nostrum?
-          </span>
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
