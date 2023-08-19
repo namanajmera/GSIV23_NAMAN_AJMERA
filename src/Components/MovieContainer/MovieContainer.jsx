@@ -1,32 +1,60 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import style from "./MovieContainer.module.less";
 import MovieBoxContainer from "./MovieBoxContainer/MovieBoxContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { getMoviesDetails } from "../../services/movieService";
-import { setMoviesData } from "../../store/slice/movieSlice";
+import {
+  setLoading,
+  setMoviesData,
+  setPage,
+} from "../../store/slice/movieSlice";
 
 const MovieContainer = () => {
-  // const [movies, setMovies] = useState()
   const dispatch = useDispatch();
 
+  const { movies, page, loading } = useSelector((state) => {
+    console.log("state.moviesData.page", state.moviesData.page);
+    return state.moviesData;
+  });
+
   useEffect(() => {
-    getMovies();
+    getMovies(page);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getMovies = () => {
-    getMoviesDetails()
+  const getMovies = (currentPage) => {
+    dispatch(setLoading(true));
+    getMoviesDetails(currentPage)
       .then((res) => {
-        console.log(res);
         dispatch(setMoviesData(res.data.results));
+        dispatch(setPage(currentPage + 1));
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
       });
   };
-  const { movies } = useSelector((state) => {
-    return state.moviesData;
-  });
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+          document.documentElement.scrollHeight - 100 &&
+        !loading
+      ) {
+        getMovies(page);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className={style["movieContainer"]}>
       <div className={style["list-box-container"]}>
@@ -35,6 +63,7 @@ const MovieContainer = () => {
             <MovieBoxContainer {...movie} key={index} />
           ))}
       </div>
+      {loading && "Loading...."}
     </div>
   );
 };
