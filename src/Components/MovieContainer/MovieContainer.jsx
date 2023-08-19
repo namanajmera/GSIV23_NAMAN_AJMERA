@@ -35,6 +35,7 @@ const MovieContainer = () => {
         const data = {
           isSearch: false,
           data: res.data.results,
+          isEmpty: false,
         };
         dispatch(setMoviesData(data));
         dispatch(setPage(currentPage + 1));

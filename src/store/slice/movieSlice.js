@@ -11,7 +11,7 @@ export const movieSlice = createSlice({
   },
   reducers: {
     setMoviesData(state, action) {
-      if (action.payload.isSearch) {
+      if (action.payload.isSearch || action.payload.isEmpty) {
         state.movies = action.payload.data;
       } else {
         state.movies = [...state.movies, ...action.payload.data];

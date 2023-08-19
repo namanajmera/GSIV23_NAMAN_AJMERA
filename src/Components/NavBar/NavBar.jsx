@@ -42,6 +42,7 @@ const NavBar = () => {
         const data = {
           isSearch: isSearching,
           data: res.data.results,
+          isEmpty: false,
         };
         dispatch(setMoviesData(data));
       })
@@ -56,6 +57,7 @@ const NavBar = () => {
         const data = {
           isSearch: false,
           data: res.data.results,
+          isEmpty: true,
         };
         dispatch(setMoviesData(data));
         dispatch(setPage(2));
