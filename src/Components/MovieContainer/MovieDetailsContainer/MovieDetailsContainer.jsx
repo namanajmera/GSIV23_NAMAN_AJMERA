@@ -67,8 +67,8 @@ const MovieDetailsContainer = () => {
                 {castData &&
                   castData.slice(0, 3).map((cast) => (
                     <li key={cast.id}>
-                      {cast.name}&nbsp;
-                      {castData.indexOf(cast) !== castData.length - 1 && " | "}
+                      {cast.name}
+                      {castData.indexOf(cast) !== castData.length - 1 && ","}
                       &nbsp;
                     </li>
                   ))}
@@ -80,8 +80,8 @@ const MovieDetailsContainer = () => {
                 {crewData &&
                   crewData.slice(0, 3).map((crew) => (
                     <li key={crew.id}>
-                      {crew.name}&nbsp;
-                      {crewData.indexOf(crew) !== crewData.length - 1 && " | "}
+                      {crew.name}
+                      {crewData.indexOf(crew) !== crewData.length - 1 && ","}
                       &nbsp;
                     </li>
                   ))}
