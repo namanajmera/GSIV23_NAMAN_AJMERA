@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import style from "./MovieDetailsContainer.module.less";
-import avenger from "../../../assets/avengers.jpg";
 import { useParams } from "react-router-dom";
 import { getMovieDetailsById } from "../../../services/movieService";
 import { convertMinutesToHHMM } from "../../../utilities/commonFunction";
@@ -15,7 +14,6 @@ const MovieDetailsContainer = () => {
 
   const getMovieById = (id) => {
     getMovieDetailsById(id).then((res) => {
-      console.log(res.data);
       setMovie(res.data);
     });
   };

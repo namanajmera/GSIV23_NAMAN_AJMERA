@@ -13,7 +13,6 @@ const MovieContainer = () => {
   const dispatch = useDispatch();
 
   const { movies, page, loading } = useSelector((state) => {
-    console.log("state.moviesData.page", state.moviesData.page);
     return state.moviesData;
   });
 
@@ -53,7 +52,7 @@ const MovieContainer = () => {
       window.removeEventListener("scroll", handleScroll);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [loading]);
 
   return (
     <div className={style["movieContainer"]}>
