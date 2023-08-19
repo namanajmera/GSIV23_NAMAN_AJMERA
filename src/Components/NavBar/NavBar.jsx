@@ -3,8 +3,13 @@ import style from "./NavBar.module.less";
 import movie from "../../assets/movie-svgrepo-com.svg";
 import home from "../../assets/home-icon.svg";
 import search from "../../assets/search-icon.svg";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
+  const navigate = useNavigate();
+  const navigateTo = () => {
+    navigate("/");
+  };
   return (
     <nav className={style["nav-bar-container"]}>
       <div className={style["logoContainer"]}>
@@ -26,7 +31,7 @@ const NavBar = () => {
         />
       </div>
       <div className={style["actionsContainer"]}>
-        <img src={home} alt="" />
+        <img src={home} alt="" onClick={navigateTo} />
       </div>
     </nav>
   );
