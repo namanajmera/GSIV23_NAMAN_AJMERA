@@ -1,6 +1,7 @@
 import React from "react";
 import style from "./MovieBoxContainer.module.less";
 import { useNavigate } from "react-router-dom";
+import { formatToTwoDecimalPlaces } from "../../../utilities/commonFunction";
 
 const MovieBoxContainer = ({
   id,
@@ -28,7 +29,9 @@ const MovieBoxContainer = ({
           <span className={style["title"]}>
             <strong>{title}</strong>
           </span>
-          <span className={style["rating"]}>{vote_average}/10</span>
+          <span className={style["rating"]}>
+            {formatToTwoDecimalPlaces(vote_average)}/10
+          </span>
         </div>
         <div className={style["desc"]}>
           <span>{overview}</span>
