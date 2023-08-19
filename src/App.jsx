@@ -1,8 +1,8 @@
-import "./App.css";
+import "./App.less";
 
 function App() {
   return (
-    <div className="">
+    <div className="App">
       <h1>App JSX</h1>
     </div>
   );
