@@ -6,11 +6,18 @@
     align-items       : center;
     flex-direction    : column;
     border            : 1px solid @color-gray;
-    border-radius     : 20px;
     width             : 250px;
     height            : 300px;
     margin            : 10px 20px;
     cursor            : pointer;
+    border-radius     : 20px;
+    background        : linear-gradient(360deg, #FFF 0%, #F3EDFF 100%);
+    box-shadow        : 0px 5px 5px 0px rgba(0, 0, 0, 0.06);
+    transition        : transform 0.3s ease;
+
+    &:hover {
+        transform: scale(1.1);
+    }
 
     .imageContainer {
         width        : 100%;
