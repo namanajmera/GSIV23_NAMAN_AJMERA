@@ -18,4 +18,10 @@ const getMovieDetailsById = (id) => {
   return axios.get(apiURL, { headers });
 };
 
-export { getMoviesDetails, getMovieDetailsById };
+const getMovieByMovieName = (movie, page) => {
+  const apiURL = `${BASE_URL}search/movie?query=${movie}&include_adult=false&language=en-US&page=${page}`;
+
+  return axios.get(apiURL, { headers });
+};
+
+export { getMoviesDetails, getMovieDetailsById, getMovieByMovieName };

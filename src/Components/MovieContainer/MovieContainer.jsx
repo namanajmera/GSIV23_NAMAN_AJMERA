@@ -2,8 +2,12 @@ import React, { useEffect } from "react";
 import style from "./MovieContainer.module.less";
 import MovieBoxContainer from "./MovieBoxContainer/MovieBoxContainer";
 import { useDispatch, useSelector } from "react-redux";
-import { getMoviesDetails } from "../../services/movieService";
 import {
+  getMovieByMovieName,
+  getMoviesDetails,
+} from "../../services/movieService";
+import {
+  setIsSearching,
   setLoading,
   setMoviesData,
   setPage,
@@ -12,11 +16,14 @@ import {
 const MovieContainer = () => {
   const dispatch = useDispatch();
 
-  const { movies, page, loading } = useSelector((state) => {
-    return state.moviesData;
-  });
+  const { movies, page, loading, isSearching, searchValue } = useSelector(
+    (state) => {
+      return state.moviesData;
+    }
+  );
 
   useEffect(() => {
+    dispatch(setIsSearching(false));
     getMovies(page);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -25,7 +32,11 @@ const MovieContainer = () => {
     dispatch(setLoading(true));
     getMoviesDetails(currentPage)
       .then((res) => {
-        dispatch(setMoviesData(res.data.results));
+        const data = {
+          isSearch: false,
+          data: res.data.results,
+        };
+        dispatch(setMoviesData(data));
         dispatch(setPage(currentPage + 1));
       })
       .catch((err) => {
@@ -43,8 +54,27 @@ const MovieContainer = () => {
           document.documentElement.scrollHeight - 100 &&
         !loading
       ) {
-        getMovies(page);
+        if (!isSearching) {
+          getMovies(page);
+        } else {
+          getMovieScrollSearch(page);
+        }
       }
+    };
+
+    const getMovieScrollSearch = (currentPage) => {
+      getMovieByMovieName(searchValue, currentPage)
+        .then((res) => {
+          const data = {
+            isSearch: isSearching,
+            data: res.data.results,
+          };
+          dispatch(setMoviesData(data));
+          dispatch(setPage(currentPage + 1));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -52,7 +82,7 @@ const MovieContainer = () => {
       window.removeEventListener("scroll", handleScroll);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading]);
+  }, [loading, isSearching]);
 
   return (
     <div className={style["movieContainer"]}>

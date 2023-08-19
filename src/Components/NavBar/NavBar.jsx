@@ -4,11 +4,43 @@ import movie from "../../assets/movie-svgrepo-com.svg";
 import home from "../../assets/home-icon.svg";
 import search from "../../assets/search-icon.svg";
 import { useNavigate } from "react-router-dom";
+import { getMovieByMovieName } from "../../services/movieService";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setIsSearching,
+  setMoviesData,
+  setSearchValue,
+} from "../../store/slice/movieSlice";
 
 const NavBar = () => {
   const navigate = useNavigate();
+  const { searchValue, isSearching } = useSelector((state) => {
+    return state.moviesData;
+  });
   const navigateTo = () => {
     navigate("/");
+  };
+
+  const dispatch = useDispatch();
+
+  const getByMovieName = (e) => {
+    dispatch(setSearchValue(e.target.value));
+    if (!e.target.value) {
+      dispatch(setIsSearching(false));
+      return;
+    }
+    dispatch(setIsSearching(true));
+    getMovieByMovieName(e.target.value, 1)
+      .then((res) => {
+        const data = {
+          isSearch: isSearching,
+          data: res.data.results,
+        };
+        dispatch(setMoviesData(data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <nav className={style["nav-bar-container"]}>
@@ -28,6 +60,8 @@ const NavBar = () => {
           name="movies"
           id="movies"
           placeholder="Search Movies...."
+          value={searchValue}
+          onChange={(e) => getByMovieName(e)}
         />
       </div>
       <div className={style["actionsContainer"]}>
