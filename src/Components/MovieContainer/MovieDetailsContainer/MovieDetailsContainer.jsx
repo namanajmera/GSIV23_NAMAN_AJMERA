@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import style from "./MovieDetailsContainer.module.less";
 import { useParams } from "react-router-dom";
 import { getMovieDetailsById } from "../../../services/movieService";
-import { convertMinutesToHHMM } from "../../../utilities/commonFunction";
+import {
+  convertMinutesToHHMM,
+  extractYearFromDate,
+  formatToTwoDecimalPlaces,
+} from "../../../utilities/commonFunction";
 
 const MovieDetailsContainer = () => {
   const [movie, setMovie] = useState(null);
@@ -34,17 +38,19 @@ const MovieDetailsContainer = () => {
             <div className={style["title-rating"]}>
               <span className={style["title"]}>{movie && movie.title}</span>
               <span className={style["rating"]}>
-                {movie && movie.vote_average}/10
+                ({formatToTwoDecimalPlaces(movie && movie.vote_average)}/10)
               </span>
             </div>
             <div className={style["info"]}>
-              <span className={style["year"]}>{movie.release_date}</span>{" "}
+              <span className={style["year"]}>
+                {extractYearFromDate(movie.release_date)}
+              </span>{" "}
               |&nbsp;
               <span className={style["length"]}>
                 {convertMinutesToHHMM(movie.runtime)}
               </span>{" "}
               |&nbsp;
-              <span className={style["director"]}>Ruso Brothers</span> |&nbsp;
+              <span className={style["director"]}>{movie.status}</span> |&nbsp;
             </div>
             <div className={style["cast"]}>
               <span>Genres:</span>
