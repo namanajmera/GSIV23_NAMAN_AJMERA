@@ -24,4 +24,15 @@ const getMovieByMovieName = (movie, page) => {
   return axios.get(apiURL, { headers });
 };
 
-export { getMoviesDetails, getMovieDetailsById, getMovieByMovieName };
+const getCastByMovieId = (movieId) => {
+  const apiURL = `${BASE_URL}movie/${movieId}/credits?language=en-US`;
+
+  return axios.get(apiURL, { headers });
+};
+
+export {
+  getMoviesDetails,
+  getMovieDetailsById,
+  getMovieByMovieName,
+  getCastByMovieId,
+};

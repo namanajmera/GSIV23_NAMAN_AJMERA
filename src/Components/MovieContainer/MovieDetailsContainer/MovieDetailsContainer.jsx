@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import style from "./MovieDetailsContainer.module.less";
 import { useParams } from "react-router-dom";
-import { getMovieDetailsById } from "../../../services/movieService";
+import {
+  getCastByMovieId,
+  getMovieDetailsById,
+} from "../../../services/movieService";
 import {
   convertMinutesToHHMM,
   extractYearFromDate,
@@ -10,6 +13,8 @@ import {
 
 const MovieDetailsContainer = () => {
   const [movie, setMovie] = useState(null);
+  const [castData, setCast] = useState([]);
+  const [crewData, setCrew] = useState([]);
   const { id } = useParams();
   useEffect(() => {
     getMovieById(id);
@@ -19,6 +24,10 @@ const MovieDetailsContainer = () => {
   const getMovieById = (id) => {
     getMovieDetailsById(id).then((res) => {
       setMovie(res.data);
+    });
+    getCastByMovieId(id).then((res) => {
+      setCast(res.data.cast);
+      setCrew(res.data.crew);
     });
   };
 
@@ -53,12 +62,28 @@ const MovieDetailsContainer = () => {
               <span className={style["director"]}>{movie.status}</span> |&nbsp;
             </div>
             <div className={style["cast"]}>
-              <span>Genres:</span>
+              <span>Casts:</span>
               <ul>
-                {movie &&
-                  movie.genres &&
-                  movie.genres.map((genre) => (
-                    <li key={genre.id}>{genre.name}&nbsp;|&nbsp;</li>
+                {castData &&
+                  castData.slice(0, 3).map((cast) => (
+                    <li key={cast.id}>
+                      {cast.name}&nbsp;
+                      {castData.indexOf(cast) !== castData.length - 1 && " | "}
+                      &nbsp;
+                    </li>
+                  ))}
+              </ul>
+            </div>
+            <div className={style["cast"]}>
+              <span>Crews:</span>
+              <ul>
+                {crewData &&
+                  crewData.slice(0, 3).map((crew) => (
+                    <li key={crew.id}>
+                      {crew.name}&nbsp;
+                      {crewData.indexOf(crew) !== crewData.length - 1 && " | "}
+                      &nbsp;
+                    </li>
                   ))}
               </ul>
             </div>
