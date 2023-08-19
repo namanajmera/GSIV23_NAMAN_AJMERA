@@ -1,11 +1,13 @@
+@import "./less/variable.less";
+
 .App {
   text-align: center;
 
   .appContainer {
-    display        : flex;
-    margin-top     : 80px;
-    justify-content: center;
-    align-items    : center;
-    flex-direction : column;
+    display       : flex;
+    margin-top    : 80px;
+    flex-direction: column;
+    background    : linear-gradient(to bottom, @color-green, @color-blue);
+    min-height    : 100vh;
   }
 }
